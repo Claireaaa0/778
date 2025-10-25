@@ -1,0 +1,117 @@
+[
+  {
+    "productName": "Steel 1/2 View 1-Panel",
+    "productType": "exterior-doors",
+    "productLink": "https://www.jeld-wen.com/en-us/products/exterior-doors/steel/half-view-1-panel",
+    "Model Details & Options": {
+      "Door Specifications": {
+        "Material": "Steel",
+        "Style": "1/2 View 1-Panel",
+        "Available Sizes": ["32x80", "36x80"],
+        "Thickness": "1-3/4 inches",
+        "Core": "Polyurethane foam"
+      },
+      "Color & Finish Options": {
+        "Factory-Applied Finishes": {
+          "Standard Colors": [
+            "Bright White",
+            "Soft White",
+            "Almond",
+            "Clay",
+            "Bronze",
+            "Black"
+          ],
+          "Premium Colors": [
+            "Slate Gray",
+            "Naval Blue",
+            "Forest Green",
+            "Crimson Red",
+            "Rich Brown"
+          ]
+        },
+        "Metallic Collection": {
+          "Standard": [
+            "Brushed Nickel",
+            "Antique Bronze",
+            "Pewter"
+          ],
+          "Premium": [
+            "Champagne Gold",
+            "Brushed Steel",
+            "Copper Patina"
+          ]
+        },
+        "Weather-Resistant Finishes": {
+          "Coating Type": "Multi-layer protective finish",
+          "UV Protection": "Advanced UV-resistant clear coat",
+          "Durability": "Tested for extreme weather conditions",
+          "Warranty": "25-year finish warranty"
+        },
+        "Custom Options": {
+          "Color Match": "Available for any paint color sample",
+          "Textured Finishes": [
+            "Sand Texture",
+            "Fine Grain",
+            "Stucco"
+          ],
+          "Two-Tone": "Different colors for interior and exterior",
+          "Special Applications": "Salt-air package for coastal areas"
+        }
+      },
+      "Glass Options": {
+        "Glass Types": ["Clear", "Low-E", "Decorative"],
+        "Glass Designs": ["Plain View", "Grid Pattern"]
+      },
+      "Hardware": {
+        "Hinges": "Steel ball-bearing hinges",
+        "Lock Preparation": "Standard cylindrical lock prep",
+        "Weatherstripping": "Full perimeter weatherstrip"
+      },
+      "Features": [
+        "Energy efficient",
+        "Security enhanced steel construction",
+        "Low maintenance",
+        "Weather resistant",
+        "Factory primed and ready to paint"
+      ],
+      "Warranty": "Limited lifetime warranty",
+      "Installation": "Professional installation recommended"
+    }
+  },
+  {
+    "productName": "Steel 2-Panel 3/4 Top",
+    "productType": "exterior-doors",
+    "productLink": "https://www.jeld-wen.com/en-us/products/exterior-doors/steel/2-panel-three-quarters-top",
+    "Model Details & Options": {
+      "Door Specifications": {
+        "Material": "Steel",
+        "Style": "2-Panel 3/4 Top",
+        "Available Sizes": ["30x80", "32x80", "36x80"],
+        "Thickness": "1-3/4 inches",
+        "Core": "Polyurethane foam"
+      },
+      "Panel Design": {
+        "Top Panel": "3/4 height",
+        "Bottom Panel": "1/4 height",
+        "Panel Style": "Raised panels"
+      },
+      "Hardware": {
+        "Hinges": "Steel ball-bearing hinges",
+        "Lock Preparation": "Standard cylindrical lock prep",
+        "Weatherstripping": "Full perimeter weatherstrip"
+      },
+      "Features": [
+        "Traditional design",
+        "Enhanced security",
+        "Energy efficient core",
+        "Durable finish",
+        "Low maintenance"
+      ],
+      "Finish Options": [
+        "Factory primed",
+        "Custom paint colors available"
+      ],
+      "Warranty": "Limited lifetime warranty"
+    }
+  }
+]

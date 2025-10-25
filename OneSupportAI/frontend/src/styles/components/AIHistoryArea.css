@@ -1,0 +1,305 @@
+
+.ai-history-area {
+  background: white;
+  overflow-y: auto;
+  height: calc(100vh - 65px);
+  max-height: calc(100vh - 65px);
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.history-row.clickable {
+  transition: background-color 0.2s, transform 0.1s;
+  position: relative;
+  padding: 0.2rem 0.3rem;
+  margin: 0.1rem 0;
+  border-radius: 3px;
+  line-height: 1.2;
+}
+
+.history-row.clickable:hover {
+  background-color: #f5f5f5;
+  transform: translateX(5px);
+}
+
+.history-row.clickable:active {
+  transform: translateX(2px);
+}
+
+/* Loading state style */
+.history-row.loading {
+  opacity: 0.7;
+  pointer-events: none;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.history-text-container {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex: 1;
+  min-height: 1.2rem;
+  max-height: 40px;
+  overflow: hidden;
+}
+
+.history-edit-icon {
+  opacity: 0;
+  background: none;
+  border: none;
+  padding: 3px;
+  cursor: pointer;
+  color: var(--primary-color);
+  display: flex;
+  font-size: 0.85rem;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s, color 0.2s, transform 0.1s;
+  border-radius: 4px;
+}
+
+.history-edit-icon:hover {
+  color: #7b1fa2;
+  background-color: rgba(99, 102, 241, 0.1);
+  transform: scale(1.1);
+}
+
+.history-row:hover .history-edit-icon {
+  opacity: 1;
+}
+
+.history-edit-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-grow: 1;
+  padding-right: 1rem;
+}
+
+.history-edit-input {
+  flex-grow: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  outline: none;
+  height: 1.8rem;
+}
+
+.history-edit-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.history-edit-container {
+  gap: 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 1.8rem;
+}
+
+.history-edit-save {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.history-edit-save:hover {
+  background-color: #4f46e5;
+}
+
+.history-edit-cancel {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.history-edit-cancel:hover {
+  background-color: #d5d5d5;
+}
+
+.loading-indicator {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  margin-left: 1rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.history-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.history-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.history-section {
+  margin-top: 0.25rem;
+}
+
+.history-list-box {
+  background: white;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 60px;
+  max-height: 60px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.history-row:last-child {
+  border-bottom: none;
+}
+
+.history-row:hover {
+  background-color: #f8f9fa;
+}
+
+.history-row input[type="checkbox"] {
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+}
+
+.history-row.loading {
+  opacity: 0.7;
+  pointer-events: none;
+  background-color: #f9f9f9;
+  position: relative;
+  min-height: 60px;
+  max-height: 60px;
+}
+
+.history-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.history-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.history-date {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.history-edit-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex: 1;
+}
+
+.history-edit-input {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.history-edit-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+
+
+.history-text {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.history-text:hover {
+  color: var(--primary-color);
+}
+
+.no-history {
+  color: #888;
+  margin-top: 1rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.history-pagination {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.history-pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.history-pagination button:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.history-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.history-pagination button.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}

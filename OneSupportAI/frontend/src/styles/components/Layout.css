@@ -1,0 +1,113 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.layout-content {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.layout-sidebar {
+  flex-shrink: 0;
+  background: var(--primary-bg);
+  border-right: 1px solid var(--border-color);
+  height: 100%;
+  overflow: hidden;
+  display: flex;  /* Add display flex */
+}
+
+.layout-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  max-width: 100%;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0; 
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.page-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Special handling for management pages to prevent pagination cutoff */
+.page-content:has(.user-management-page),
+.page-content:has(.document-management-page) {
+  overflow-y: auto;
+  /* Custom scrollbar styling for better appearance */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.page-content:has(.user-management-page)::-webkit-scrollbar,
+.page-content:has(.document-management-page)::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-content:has(.user-management-page)::-webkit-scrollbar-track,
+.page-content:has(.document-management-page)::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.page-content:has(.user-management-page)::-webkit-scrollbar-thumb,
+.page-content:has(.document-management-page)::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.page-content:has(.user-management-page)::-webkit-scrollbar-thumb:hover,
+.page-content:has(.document-management-page)::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* No AI Sidebar Layout */
+.no-ai-sidebar {
+  grid-template-columns: 1fr !important;
+}
+
+/* Global AI Sidebar styles */
+.ai-sidebar-container {
+  position: relative;
+  width: 320px;
+  flex-shrink: 0;
+  background: white;
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+  transition: width 0.1s ease;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.ai-sidebar-container:hover {
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Make sure TabPanel appears above the content */
+.tab-panel {
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  z-index: 1;
+}

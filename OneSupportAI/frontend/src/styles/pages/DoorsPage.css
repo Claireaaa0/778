@@ -1,0 +1,15 @@
+/* Doors Page Layout */
+.doors-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--primary-bg);
+}
+
+.doors-layout > div {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}

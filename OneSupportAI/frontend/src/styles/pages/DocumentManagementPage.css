@@ -1,0 +1,71 @@
+.document-management-page {
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  /* Remove height constraints to allow natural content expansion */
+}
+
+.page-header {
+  margin-bottom: 1.5rem; /* Keep consistent spacing with components */
+}
+
+.page-header h1 {
+  font-size: 1.5rem; /* Reduce title font size */
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem; /* Reduce bottom margin */
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 0.875rem; /* Reduce subtitle font size */
+}
+
+.content-wrapper {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.access-denied {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+}
+
+.access-denied h2 {
+  color: #dc2626;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.access-denied p {
+  color: #7f1d1d;
+  font-size: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .document-management-page {
+    padding: 0.5rem; /* Further reduce padding */
+  }
+  
+  .page-header {
+    margin-bottom: 1rem; /* Maintain reasonable spacing on small screens */
+  }
+  
+  .page-header h1 {
+    font-size: 1.25rem; /* Further reduce title size on small screens */
+  }
+  
+  .page-header p {
+    font-size: 0.8rem; /* Further reduce subtitle size on small screens */
+  }
+}

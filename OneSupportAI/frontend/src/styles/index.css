@@ -1,0 +1,17 @@
+/* Main styles entry point */
+
+/* Global styles */
+@import './globals.css';
+
+/* Component styles */
+@import './components/Header.css';
+@import './components/Sidebar.css';
+@import './components/ProductArea.css';
+@import './components/DoorsArea.css';
+@import './components/WindowsArea.css';
+@import './components/AISidebar.css';
+
+/* Page styles */
+@import './pages/HomePage.css';
+@import './pages/DoorsPage.css';
+@import './pages/WindowsPage.css';

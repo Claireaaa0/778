@@ -1,0 +1,108 @@
+[
+  {
+    "productName": "Siteline Casement",
+    "productType": "windows",
+    "productLink": "https://www.jeld-wen.com/en-us/products/windows/siteline-clad-wood/casement",
+    "Model Details & Options": {
+      "Window Specifications": {
+        "Type": "Casement",
+        "Material": "Clad-Wood",
+        "Available Sizes": {
+          "Width Range": "16\" - 36\"",
+          "Height Range": "24\" - 84\""
+        },
+        "Frame Depth": "5-1/4 inches"
+      },
+      "Performance Ratings": {
+        "Energy Star Certified": "Yes",
+        "U-Factor": "0.30",
+        "Solar Heat Gain Coefficient": "0.25",
+        "Visible Transmittance": "0.50"
+      },
+      "Glass Options": {
+        "Standard": "Low-E Glass",
+        "Available Options": [
+          "Double-pane",
+          "Triple-pane",
+          "Tempered glass",
+          "Laminated glass"
+        ]
+      },
+      "Hardware": {
+        "Standard": "Multi-point locking system",
+        "Operation": "Easy-to-operate folding handle",
+        "Finishes": [
+          "White",
+          "Desert Sand",
+          "Chestnut Bronze",
+          "Oil-Rubbed Bronze"
+        ]
+      },
+      "Features": [
+        "AuraLast® pine wood protection",
+        "Energy efficient design",
+        "Easy to clean from inside",
+        "Smooth operation",
+        "Multiple installation options"
+      ],
+      "Warranty": "Limited lifetime warranty on wood components"
+    }
+  },
+  {
+    "productName": "Clad-Wood Casement",
+    "productType": "windows",
+    "productLink": "https://www.jeld-wen.com/en-us/products/windows/siteline-clad-wood/casement",
+    "Model Details & Options": {
+      "Window Specifications": {
+        "Type": "Casement",
+        "Material": {
+          "Interior": "Solid pine",
+          "Exterior": "Aluminum cladding"
+        },
+        "Available Sizes": {
+          "Width": "18\" - 40\"",
+          "Height": "24\" - 96\""
+        }
+      },
+      "Construction": {
+        "Frame": "4-9/16\" jamb depth",
+        "Sash": "1-3/4\" thick",
+        "Weather Stripping": "Full perimeter"
+      },
+      "Glass Package": {
+        "Standard": "Low-E insulating glass",
+        "Options": [
+          "Low-E 366",
+          "Low-E EC",
+          "Clear insulating",
+          "Tempered",
+          "Laminated"
+        ],
+        "Spacer": "Stainless steel spacer"
+      },
+      "Hardware & Operation": {
+        "Operating System": "Truth Maxim® hardware",
+        "Lock System": "Sequential lock system",
+        "Screen": "Aluminum mesh with fiberglass coating"
+      },
+      "Finish Options": {
+        "Interior": [
+          "Primed",
+          "Pre-finished white",
+          "Clear lacquer"
+        ],
+        "Exterior Cladding Colors": [
+          "White",
+          "Desert Sand",
+          "Hartford Green",
+          "Dark Bronze"
+        ]
+      },
+      "Energy Performance": {
+        "U-Factor": "0.28",
+        "SHGC": "0.28",
+        "Energy Star Qualified": "All zones"
+      }
+    }
+  }
+]
