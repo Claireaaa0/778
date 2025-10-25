@@ -1,0 +1,373 @@
+useDotenv: true
+service: onesupportai-backend
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-southeast-2
+  stage: ${opt:stage, 'dev'}
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    JWT_SECRET: ${env:JWT_SECRET}
+    USERS_TABLE: ${env:USERS_TABLE}
+    PRODUCTS_TABLE: ${env:PRODUCTS_TABLE}
+    CASES_TABLE: ${env:CASES_TABLE}
+    WEBSOCKET_CONNECTIONS_TABLE: ${env:WEBSOCKET_CONNECTIONS_TABLE}
+    USE_BEDROCK_KB: ${env:USE_BEDROCK_KB}
+    KNOWLEDGE_BASE_ID: ${env:KNOWLEDGE_BASE_ID}
+    CASE_ANALYSIS_TABLE: ${env:CASE_ANALYSIS_TABLE}
+    KB_DATA_SOURCE_ID: ${env:KB_DATA_SOURCE_ID}
+    KB_TOP_K: ${env:KB_TOP_K}
+    S3_BUCKET: ${env:S3_BUCKET}
+    ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5000,http://localhost:5174
+    WEBSOCKET_ENDPOINT: ${env:WEBSOCKET_ENDPOINT}
+    CONNECT_INSTANCE_ID: ${env:CONNECT_INSTANCE_ID}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - dynamodb:DeleteItem
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+            - dynamodb:BatchGetItem
+            - dynamodb:UpdateItem
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - bedrock:InvokeModel
+            - bedrock:InvokeModelWithResponseStream
+            - bedrock:Retrieve
+            - bedrock:RetrieveAndGenerate
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - connect:GetContactAttributes
+            - connect:ListRealtimeContactAnalysisSegments
+            - connect:ListRealtimeContactAnalysisSegmentsV2
+            - bedrock:StartIngestionJob
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:ListBucket
+            - s3:PutObject
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - execute-api:ManageConnections
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - scheduler:*
+          Resource: "*"
+functions:
+  api:
+    handler: src/lambda.handler
+    name: ${self:provider.stage}-${self:service}-api-v2
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+    timeout: 30
+    memorySize: 512
+
+  login:
+    handler: src/handlers/userLoginHandler.login
+    name: ${self:provider.stage}-${self:service}-login-v2
+    events:
+      - http:
+          path: /api/auth/login
+          method: POST
+
+  getCustomerInfo:
+    handler: src/handlers/connectCustomerInfoHandler.handler
+    name: ${self:provider.stage}-${self:service}-getCustomerInfo-v2
+    timeout: 10
+    memorySize: 256
+
+  websocket:
+    handler: src/handlers/websocketHandler.handler
+    name: ${self:provider.stage}-${self:service}-websocket-v2
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
+      - websocket:
+          route: $default
+  
+  dailyAnalysis:
+    handler: src/handlers/caseAnalysisHandler.EODTotalJobHandler
+    name: ${self:provider.stage}-${self:service}-analysis-v2
+    events:
+      - http:
+          path: /api/jobs/cases/counts/eod
+          method: POST
+      - schedule:
+          rate: cron(55 23 * * ? *)
+          description: Run EOD job at 23:55 daily
+
+  knowledgeBaseSync:
+    handler: src/handlers/knowledgeBaseHandler.handler
+    name: ${self:provider.stage}-${self:service}-kb-sync-v2
+    events:
+      - http:
+          path: /api/jobs/kb/sync
+          method: POST
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+  - serverless-offline-aws-eventbridge
+
+custom:
+  esbuild:
+    bundle: true
+    format: cjs
+    minify: false
+    sourcemap: true
+    exclude: ["aws-sdk"]
+    target: "node20"
+    platform: "node"
+    concurrency: 10
+    outdir: ".esbuild"
+  serverless-offline:
+    httpPort: 3000
+    lambdaPort: 3002
+    host: 0.0.0.0
+    noPrependStageInUrl: true
+    reloadHandler: true
+    useChildProcesses: false
+    allowCache: false
+    reload: true
+    printOutput: true
+  serverless-offline-aws-eventbridge:
+    port: 4010 # port to run the eventBridge mock server on
+    mockEventBridgeServer: true # Set to false if EventBridge is already mocked by another stack
+    hostname: 127.0.0.1 # IP or hostname of existing EventBridge if mocked by another stack
+    pubSubPort: 4011 # Port to run the MQ server (or just listen if using an EventBridge Mock server from another stack)
+    debug: false # flag to show debug messages
+    account: '' # account id that gets passed to the event
+    maximumRetryAttempts: 10 # maximumRetryAttempts to retry lambda
+    retryDelayMs: 500 # retry delay
+    throwRetryExhausted: false # default true
+    payloadSizeLimit: "10mb" # Controls the maximum payload size being passed to https://www.npmjs.com/package/bytes (Note: this payload size might not be the same size as your AWS Eventbridge receive)
+
+resources:
+  Resources:
+    # DynamoDB Tables
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:USERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: email-index
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
+    ProductsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:PRODUCTS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: type
+            AttributeType: S
+          - AttributeName: productName
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: type-index
+            KeySchema:
+              - AttributeName: type
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: productName-index
+            KeySchema:
+              - AttributeName: productName
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+    CasesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:CASES_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+          - AttributeName: sk
+            AttributeType: S
+          - AttributeName: statusGSIKey
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+          - AttributeName: contactNumber
+            AttributeType: S
+          - AttributeName: userCaseLCI
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: status-createdAt-index
+            KeySchema:
+              - AttributeName: statusGSIKey
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: status-id-index
+            KeySchema:
+              - AttributeName: statusGSIKey
+                KeyType: HASH
+              - AttributeName: sk
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        LocalSecondaryIndexes:
+          - IndexName: name-index
+            KeySchema:
+              - AttributeName: pk
+                KeyType: HASH
+              - AttributeName: name
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: email-index
+            KeySchema:
+              - AttributeName: pk
+                KeyType: HASH
+              - AttributeName: email
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: contactNumber-index
+            KeySchema:
+              - AttributeName: pk
+                KeyType: HASH
+              - AttributeName: contactNumber
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: userCaseLCI-index
+            KeySchema:
+              - AttributeName: pk
+                KeyType: HASH
+              - AttributeName: userCaseLCI
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+    WebSocketConnectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:WEBSOCKET_CONNECTIONS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: connectedAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: userId-index
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: connectedAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+    CaseAnalysisTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${env:CASE_ANALYSIS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: pk # userID
+            AttributeType: S
+          - AttributeName: sk # usually type+date
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+          - AttributeName: userTypeGSIKey
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: date-index
+            KeySchema:
+              - AttributeName: date
+                KeyType: HASH
+              - AttributeName: userTypeGSIKey
+                KeyType: RANGE
+            Projection: 
+              ProjectionType: ALL
+          - IndexName: user-type-index
+            KeySchema:
+              - AttributeName: userTypeGSIKey
+                KeyType: HASH
+              - AttributeName: date
+                KeyType: RANGE
+            Projection: 
+              ProjectionType: ALL
+          - IndexName: type-index
+            KeySchema:
+              - AttributeName: sk
+                KeyType: HASH
+              - AttributeName: pk
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
